@@ -245,7 +245,7 @@ export default function App() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="bg-white p-12 rounded-3xl shadow-xl max-w-md w-full text-center space-y-8">
           <div className="w-20 h-20 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mx-auto rotate-12 overflow-hidden">
-            <img src="/capsules.png" className="w-14 h-14 object-contain" alt="Logo" referrerPolicy="no-referrer" />
+            <img src="capsules.png" className="w-14 h-14 object-contain" alt="Logo" referrerPolicy="no-referrer" />
           </div>
           <div>
             <h1 className="text-3xl font-bold text-slate-900">PharmaStock</h1>
@@ -255,7 +255,7 @@ export default function App() {
             onClick={handleLogin}
             className="w-full py-4 bg-teal-600 text-white font-bold rounded-2xl hover:bg-teal-700 transition-all shadow-lg shadow-teal-100 flex items-center justify-center gap-3"
           >
-            <img src="https://www.gstatic.com/firebase/anonymous-scan.png" className="w-6 h-6 invert" alt="Google" referrerPolicy="no-referrer" />
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-6 h-6" alt="Google" referrerPolicy="no-referrer" />
             Sign in with Google
           </button>
           <p className="text-xs text-slate-400">Secure access for authorized pharmacists only.</p>
