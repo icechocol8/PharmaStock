@@ -2,7 +2,7 @@
   "name": "PharmaStock PHP",
   "short_name": "PharmaStock",
   "description": "Pharmacy Inventory Management System",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#f8fafc",
   "theme_color": "#0d9488",
