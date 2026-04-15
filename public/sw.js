@@ -2,9 +2,9 @@
 const CACHE_NAME = 'pharmastock-v1';
 const ASSETS = [
   './',
-  './index.html',
-  './manifest.json',
-  './capsules.png'
+  '/index.html',
+  '/manifest.json',
+  '/capsules.png'
 ];
 
 self.addEventListener('install', (event) => {

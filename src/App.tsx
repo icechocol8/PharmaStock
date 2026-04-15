@@ -245,7 +245,7 @@ export default function App() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="bg-white p-12 rounded-3xl shadow-xl max-w-md w-full text-center space-y-8">
           <div className="w-20 h-20 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center mx-auto rotate-12 overflow-hidden">
-            <img src="capsules.png" className="w-14 h-14 object-contain" alt="Logo" referrerPolicy="no-referrer" />
+            <img src="/capsules.png" className="w-14 h-14 object-contain" alt="Logo" referrerPolicy="no-referrer" />
           </div>
           <div>
             <h1 className="text-3xl font-bold text-slate-900">PharmaStock</h1>
