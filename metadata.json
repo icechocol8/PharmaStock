@@ -1,0 +1,5 @@
+{
+  "name": "PharmaStock PHP",
+  "description": "A professional pharmacy inventory management system with real-time tracking, expiry alerts, and PHP currency support.",
+  "requestFramePermissions": []
+}

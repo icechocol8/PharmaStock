@@ -1,0 +1,22 @@
+{
+  "name": "PharmaStock PHP",
+  "short_name": "PharmaStock",
+  "description": "Pharmacy Inventory Management System",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0d9488",
+  "icons": [
+    {
+      "src": "https://picsum.photos/seed/pharma/192/192",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://picsum.photos/seed/pharma/512/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

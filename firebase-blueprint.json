@@ -1,0 +1,121 @@
+{
+  "entities": {
+    "Medicine": {
+      "title": "Medicine",
+      "description": "Represents a pharmaceutical product in the inventory.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The generic or brand name of the medicine."
+        },
+        "sku": {
+          "type": "string",
+          "description": "Stock Keeping Unit - unique identifier."
+        },
+        "category": {
+          "type": "string",
+          "description": "Category (e.g., Antibiotics, Painkillers, etc.)"
+        },
+        "stock": {
+          "type": "number",
+          "description": "Current quantity in stock."
+        },
+        "minStock": {
+          "type": "number",
+          "description": "Minimum stock level for alerts."
+        },
+        "price": {
+          "type": "number",
+          "description": "Selling price in PHP."
+        },
+        "cost": {
+          "type": "number",
+          "description": "Cost price in PHP."
+        },
+        "expiryDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Expiration date of the batch."
+        },
+        "manufacturer": {
+          "type": "string",
+          "description": "Manufacturer name."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp."
+        }
+      },
+      "required": ["name", "sku", "stock", "price", "expiryDate"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Records stock changes (sales or restocks).",
+      "type": "object",
+      "properties": {
+        "medicineId": {
+          "type": "string",
+          "description": "Reference to the medicine."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["sale", "restock", "adjustment"],
+          "description": "Type of transaction."
+        },
+        "quantity": {
+          "type": "number",
+          "description": "Quantity changed."
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "Total value in PHP."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the transaction occurred."
+        },
+        "userId": {
+          "type": "string",
+          "description": "ID of the user who performed the transaction."
+        }
+      },
+      "required": ["medicineId", "type", "quantity", "timestamp"]
+    },
+    "DailyLog": {
+      "title": "DailyLog",
+      "description": "Daily stock tracking record.",
+      "type": "object",
+      "properties": {
+        "medicineId": { "type": "string" },
+        "medicineName": { "type": "string" },
+        "date": { "type": "string" },
+        "openingStock": { "type": "number" },
+        "sold": { "type": "number" },
+        "received": { "type": "number" },
+        "damaged": { "type": "number" },
+        "closingStock": { "type": "number" },
+        "notes": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "userId": { "type": "string" }
+      },
+      "required": ["medicineId", "date", "openingStock", "closingStock", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/medicines/{medicineId}": {
+      "schema": "Medicine",
+      "description": "Collection of medicine products."
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "History of stock movements."
+    },
+    "/dailyLogs/{logId}": {
+      "schema": "DailyLog",
+      "description": "Daily stock tracking logs."
+    }
+  }
+}

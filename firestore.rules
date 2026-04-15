@@ -1,0 +1,138 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: medicines
+// Document ID: auto-generated
+// Fields:
+//   - name: string (required, 1-100 chars)
+//   - sku: string (required, 1-50 chars)
+//   - category: string (required, 1-50 chars)
+//   - stock: number (required, >= 0)
+//   - minStock: number (required, >= 0)
+//   - price: number (required, >= 0)
+//   - cost: number (required, >= 0)
+//   - expiryDate: timestamp/string (required)
+//   - manufacturer: string (optional, 0-100 chars)
+//   - updatedAt: timestamp/string (required)
+//
+// Collection: transactions
+// Document ID: auto-generated
+// Fields:
+//   - medicineId: string (required)
+//   - medicineName: string (optional)
+//   - type: string (required, ['sale', 'restock', 'adjustment'])
+//   - quantity: number (required, > 0)
+//   - totalAmount: number (required, >= 0)
+//   - timestamp: timestamp/string (required)
+//   - userId: string (required)
+//
+// ===============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "jayjay.alindog19x@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isPharmacist() {
+      return isAuthenticated(); // For this app, any logged in user is a pharmacist
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidString(field, min, max) {
+      return request.resource.data[field] is string &&
+             request.resource.data[field].size() >= min &&
+             request.resource.data[field].size() <= max;
+    }
+
+    function isValidNumber(field, min) {
+      return request.resource.data[field] is number &&
+             request.resource.data[field] >= min;
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidMedicine(data) {
+      return hasRequiredFields(['name', 'sku', 'category', 'stock', 'minStock', 'price', 'cost', 'expiryDate', 'updatedAt']) &&
+             hasOnlyAllowedFields(['name', 'sku', 'category', 'stock', 'minStock', 'price', 'cost', 'expiryDate', 'manufacturer', 'updatedAt']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.sku is string && data.sku.size() > 0 && data.sku.size() <= 50 &&
+             data.category is string && data.category.size() > 0 && data.category.size() <= 50 &&
+             data.stock is number && data.stock >= 0 &&
+             data.minStock is number && data.minStock >= 0 &&
+             data.price is number && data.price >= 0 &&
+             data.cost is number && data.cost >= 0;
+    }
+
+    function isValidTransaction(data) {
+      return hasRequiredFields(['medicineId', 'type', 'quantity', 'totalAmount', 'timestamp', 'userId']) &&
+             hasOnlyAllowedFields(['medicineId', 'medicineName', 'type', 'quantity', 'totalAmount', 'timestamp', 'userId']) &&
+             data.medicineId is string &&
+             data.type in ['sale', 'restock', 'adjustment'] &&
+             data.quantity is number &&
+             data.totalAmount is number && data.totalAmount >= 0 &&
+             data.userId == request.auth.uid;
+    }
+
+    function isValidDailyLog(data) {
+      return hasRequiredFields(['medicineId', 'medicineName', 'date', 'openingStock', 'sold', 'received', 'damaged', 'closingStock', 'timestamp', 'userId']) &&
+             data.medicineId is string &&
+             data.date is string &&
+             data.openingStock is number &&
+             data.sold is number &&
+             data.received is number &&
+             data.damaged is number &&
+             data.closingStock is number &&
+             data.userId == request.auth.uid;
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    match /medicines/{medicineId} {
+      allow read: if isAuthenticated();
+      allow create: if isPharmacist() && isValidMedicine(request.resource.data);
+      allow update: if isPharmacist() && isValidMedicine(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /transactions/{transactionId} {
+      allow read: if isAuthenticated();
+      allow create: if isPharmacist() && isValidTransaction(request.resource.data);
+      allow update, delete: if isAdmin();
+    }
+
+    match /dailyLogs/{logId} {
+      allow read: if isAuthenticated();
+      allow create: if isPharmacist() && isValidDailyLog(request.resource.data);
+      allow update, delete: if isAdmin();
+    }
+  }
+}
