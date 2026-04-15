@@ -1,10 +1,10 @@
 // Simple Service Worker for PWA installation
-const CACHE_NAME = 'pharmastock-v1';
+const CACHE_NAME = 'pharmastock-v2';
 const ASSETS = [
   './',
-  'index.html',
-  'manifest.json',
-  'capsules.png'
+  './index.html',
+  './manifest.json',
+  './capsules.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -13,6 +13,22 @@ self.addEventListener('install', (event) => {
       return cache.addAll(ASSETS);
     })
   );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {

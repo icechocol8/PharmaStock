@@ -28,7 +28,7 @@ export default function Layout({ children, activeTab, setActiveTab, userEmail, o
       <aside className="hidden md:flex w-64 bg-white border-r border-slate-200 flex-col sticky top-0 h-screen">
         <div className="p-6 border-bottom border-slate-100">
           <h1 className="text-xl font-bold text-teal-600 flex items-center gap-2">
-            <img src="capsules.png" className="w-8 h-8 object-contain" alt="Logo" referrerPolicy="no-referrer" />
+            <img src="./capsules.png" className="w-8 h-8 object-contain" alt="Logo" referrerPolicy="no-referrer" />
             PharmaStock
           </h1>
           <p className="text-xs text-slate-400 mt-1">Inventory Management</p>
@@ -75,7 +75,7 @@ export default function Layout({ children, activeTab, setActiveTab, userEmail, o
       {/* Mobile Header */}
       <header className="md:hidden bg-white border-b border-slate-200 p-4 flex items-center justify-between sticky top-0 z-50">
         <h1 className="text-lg font-bold text-teal-600 flex items-center gap-2">
-          <img src="capsules.png" className="w-6 h-6 object-contain" alt="Logo" referrerPolicy="no-referrer" />
+          <img src="./capsules.png" className="w-6 h-6 object-contain" alt="Logo" referrerPolicy="no-referrer" />
           PharmaStock
         </h1>
         <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-slate-600">
